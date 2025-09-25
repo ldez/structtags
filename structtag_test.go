@@ -188,7 +188,7 @@ func TestParseToMapValues(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			tags, err := ParseToMapValues(test.tag)
+			tags, err := ParseToMapValues(test.tag, true)
 			require.NoError(t, err)
 
 			assert.Equal(t, test.expected, tags)
@@ -331,7 +331,7 @@ func TestParseToSliceValues(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			tags, err := ParseToSliceValues(test.tag)
+			tags, err := ParseToSliceValues(test.tag, true)
 			require.NoError(t, err)
 
 			assert.Equal(t, test.expected, tags)
@@ -418,7 +418,7 @@ func TestParseToFatih(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			tags, err := ParseToFatih(test.tag)
+			tags, err := ParseToFatih(test.tag, false)
 			require.NoError(t, err)
 
 			if test.expected == nil {
@@ -432,7 +432,7 @@ func TestParseToFatih(t *testing.T) {
 	}
 }
 
-func TestParseToFatihExtended(t *testing.T) {
+func TestParseToFatih_extended(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		tag      string
@@ -511,7 +511,7 @@ func TestParseToFatihExtended(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			tags, err := ParseToFatihExtended(test.tag)
+			tags, err := ParseToFatih(test.tag, true)
 			require.NoError(t, err)
 
 			if test.expected == nil {

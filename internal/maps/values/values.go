@@ -3,7 +3,14 @@ package values
 import "github.com/ldez/structtags/parser"
 
 type Filler struct {
-	data map[string][]string
+	data        map[string][]string
+	escapeComma bool
+}
+
+func NewFiller(escapeComma bool) *Filler {
+	return &Filler{
+		escapeComma: escapeComma,
+	}
 }
 
 func (f *Filler) Data() map[string][]string {
@@ -15,7 +22,7 @@ func (f *Filler) Fill(key, value string) error {
 		f.data = make(map[string][]string)
 	}
 
-	values, err := parser.Value(value)
+	values, err := parser.Value(value, f.escapeComma)
 	if err != nil {
 		return err
 	}

@@ -59,7 +59,7 @@ type Foo struct {
 
 Instead of rewriting the wheel for each project, I also provided a package with the plumbing:
 - `parser.Tag()`: extracted from `reflect.StructTag` for the base parsing.
-- `parser.Value()`: to parse the value (support comma escaping).
+- `parser.Value()`: to parse the value (support optional comma escaping).
 
 ## Usage
 
@@ -68,20 +68,20 @@ Instead of rewriting the wheel for each project, I also provided a package with 
 - `structtags.ParseToMapMultikeys(tag)`:
     - Parses a struct tag to a `map[string][]string`.
     - For non-conventional tags where the key is repeated.
-- `structtags.ParseToMapValues(tag)`:
+- `structtags.ParseToMapValues(tag, escapeComma)`:
     - Parses a struct tag to a `map[string][]string`.
-    - The value is split on a comma. (support comma escaped by backslash)
+    - The value is split on a comma.
+    - Option: comma escaped by backslash.
 - `structtags.ParseToSlice(tag)`:
     - Parses a struct tag to a slice of `parser.Tag`.
-- `structtags.ParseToSliceValues(tag)`:
+- `structtags.ParseToSliceValues(tag, escapeComma)`:
     - Parses a struct tag to a slice of `slicevalues.Tag`.
-    - The value is split on a comma. (support comma escaped by backslash)
-- `structtags.ParseToFatih(tag)`:
+    - The value is split on a comma.
+    - Option: comma escaped by backslash.
+- `structtags.ParseToFatih(tag, escapeComma)`:
     - Parses a struct tag to a `*structtag.Tags`.
     - The value is split on a comma.
-- `structtags.ParseToFatihExtended(tag)`:
-    - Parses a struct tag to a `*structtag.Tags`.
-    - Extended: support comma escaped by backslash.
+    - Option: comma escaped by backslash.
 
 The `parser` package provides the tooling to parse a struct tag and its associated value.
 

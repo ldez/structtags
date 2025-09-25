@@ -8,7 +8,7 @@ import (
 )
 
 func TestFiller_Fill(t *testing.T) {
-	filler := Filler{}
+	filler := NewFiller(true)
 
 	err := filler.Fill("a", "b")
 	require.NoError(t, err)
@@ -24,8 +24,25 @@ func TestFiller_Fill(t *testing.T) {
 	assert.Equal(t, expected, filler.Data())
 }
 
+func TestFiller_Fill_noescape(t *testing.T) {
+	filler := NewFiller(false)
+
+	err := filler.Fill("a", "b")
+	require.NoError(t, err)
+
+	err = filler.Fill("d", "e,f\\,g")
+	require.NoError(t, err)
+
+	expected := []Tag{
+		{Key: "a", Values: []string{"b"}},
+		{Key: "d", Values: []string{"e", "f\\", "g"}},
+	}
+
+	assert.Equal(t, expected, filler.Data())
+}
+
 func TestFiller_Fill_duplicate(t *testing.T) {
-	filler := Filler{}
+	filler := NewFiller(true)
 
 	err := filler.Fill("a", "b")
 	require.NoError(t, err)
