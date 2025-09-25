@@ -73,9 +73,9 @@ Instead of rewriting the wheel for each project, I also provided a package with 
     - The value is split on a comma.
     - Option: comma escaped by backslash.
 - `structtags.ParseToSlice(tag)`:
-    - Parses a struct tag to a slice of `parser.Tag`.
+    - Parses a struct tag to a slice of `type Tag struct { Key, Value string }`.
 - `structtags.ParseToSliceValues(tag, escapeComma)`:
-    - Parses a struct tag to a slice of `slicevalues.Tag`.
+    - Parses a struct tag to a slice of `type Tag struct { Key string, Value []string }`.
     - The value is split on a comma.
     - Option: comma escaped by backslash.
 - `structtags.ParseToFatih(tag, escapeComma)`:
