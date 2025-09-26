@@ -56,6 +56,16 @@ func TestParseTag(t *testing.T) {
 			expected: nil,
 		},
 		{
+			desc:     "ignore whitespace before the key",
+			tag:      `   json:"a"`,
+			expected: []TestTag{{Key: "json", Value: "a"}},
+		},
+		{
+			desc:     "ignore whitespace after the value",
+			tag:      `json:"a"   `,
+			expected: []TestTag{{Key: "json", Value: "a"}},
+		},
+		{
 			desc:     "simple value",
 			tag:      `json:"a"`,
 			expected: []TestTag{{Key: "json", Value: "a"}},
@@ -120,14 +130,59 @@ func TestParseTag_error(t *testing.T) {
 		expected string
 	}{
 		{
-			desc:     "invalid tag",
+			desc:     "missing colon",
 			tag:      `json`,
-			expected: "syntax error in tag \"json\"",
+			expected: "invalid struct tag syntax `json`: missing `:`",
 		},
 		{
-			desc:     "incomplete tag",
+			desc:     "no value",
+			tag:      `json:`,
+			expected: "invalid struct tag value `json:`",
+		},
+		{
+			desc:     "missing quotes",
+			tag:      `json:q`,
+			expected: "invalid struct tag value `json:q`: missing opening quote",
+		},
+		{
+			desc:     "missing opening quote",
+			tag:      `json:q"`,
+			expected: "invalid struct tag value `json:q\"`: missing opening quote",
+		},
+		{
+			desc:     "missing closing quote without value",
 			tag:      `json:"`,
-			expected: "syntax error in tag \"\\\"\"",
+			expected: "invalid struct tag value `json:\"`: missing closing quote",
+		},
+		{
+			desc:     "missing closing quote",
+			tag:      `json:"a`,
+			expected: "invalid struct tag value `json:\"a`: missing closing quote",
+		},
+		{
+			desc:     "too many quotes (end)",
+			tag:      `json:"a""`,
+			expected: "invalid struct tag syntax `json:\"a\"\"`",
+		},
+		{
+			desc:     "too many quotes (start)",
+			tag:      `json:""a"`,
+			expected: "invalid struct tag value `json:\"\"a\"`",
+		},
+		{
+			desc:     "space after the key",
+			tag:      `json:  `,
+			expected: "invalid struct tag value `json:  `: missing opening quote",
+		},
+		{
+			desc:     "space",
+			tag:      `json:"   `,
+			expected: "invalid struct tag value `json:\"   `: missing closing quote",
+		},
+		{
+			desc:     "tab",
+			tag:      `json:"a"	yaml:"b"`,
+			expected: "invalid struct tag syntax `json:\"a\"\tyaml:\"b\"`",
 		},
 		{
 			desc:     "filler error",

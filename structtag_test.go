@@ -117,6 +117,16 @@ func TestParseToMapMultikeys(t *testing.T) {
 			tag:      `json:"a" json:"b"`,
 			expected: map[string][]string{"json": {"a", "b"}},
 		},
+		{
+			desc: "foo",
+			tag:  `long:"thresholds" default:"1" default:"2" env:"THRESHOLD_VALUES"  env-delim:","`,
+			expected: map[string][]string{
+				"default":   {"1", "2"},
+				"env":       {"THRESHOLD_VALUES"},
+				"env-delim": {","},
+				"long":      {"thresholds"},
+			},
+		},
 	}
 
 	for _, test := range testCases {

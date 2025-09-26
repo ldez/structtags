@@ -18,7 +18,11 @@ type Filler[T any] interface {
 // Tag parses a struct tag.
 //
 // Based on https://github.com/golang/go/blob/411c250d64304033181c46413a6e9381e8fe9b82/src/reflect/type.go#L1030-L1108
+//
+//nolint:gocyclo
 func Tag[T any](tag string, filler Filler[T]) (T, error) {
+	base := tag
+
 	for tag != "" {
 		// Skip leading space.
 		i := 0
@@ -40,10 +44,31 @@ func Tag[T any](tag string, filler Filler[T]) (T, error) {
 			i++
 		}
 
-		if i == 0 || i+1 >= len(tag) || tag[i] != ':' || tag[i+1] != '"' {
+		switch {
+		case i == 0:
 			var zero T
 
-			return zero, fmt.Errorf("syntax error in tag %q", tag)
+			return zero, fmt.Errorf("invalid struct tag syntax `%s`", base)
+
+		case i+1 > len(tag):
+			var zero T
+
+			return zero, fmt.Errorf("invalid struct tag syntax `%s`: missing `:`", base)
+
+		case i+1 == len(tag):
+			var zero T
+
+			return zero, fmt.Errorf("invalid struct tag value `%s`", base)
+
+		case tag[i] != ':':
+			var zero T
+
+			return zero, fmt.Errorf("invalid struct tag syntax `%s`: missing `:`", base)
+
+		case tag[i+1] != '"':
+			var zero T
+
+			return zero, fmt.Errorf("invalid struct tag value `%s`: missing opening quote", base)
 		}
 
 		name := tag[:i]
@@ -62,7 +87,7 @@ func Tag[T any](tag string, filler Filler[T]) (T, error) {
 		if i >= len(tag) {
 			var zero T
 
-			return zero, fmt.Errorf("syntax error in tag %q", tag)
+			return zero, fmt.Errorf("invalid struct tag value `%s`: missing closing quote", base)
 		}
 
 		qvalue := tag[:i+1]
@@ -72,7 +97,7 @@ func Tag[T any](tag string, filler Filler[T]) (T, error) {
 		if err != nil {
 			var zero T
 
-			return zero, fmt.Errorf("syntax error in tag %q", tag)
+			return zero, fmt.Errorf("invalid struct tag value `%s`: %w", base, err)
 		}
 
 		err = filler.Fill(name, value)

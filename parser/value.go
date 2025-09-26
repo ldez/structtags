@@ -34,7 +34,7 @@ func Value(raw string, escapeComma bool) ([]string, error) {
 		}
 
 		if i > len(raw) {
-			return nil, fmt.Errorf("syntax error in tag value %q", raw)
+			return nil, fmt.Errorf("syntax error in struct tag value %q", raw)
 		}
 
 		value := raw[:i]
