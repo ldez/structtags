@@ -93,9 +93,9 @@ This is the first version of the module, and I want to extend it based on feedba
 
 ## Notes
 
-The struct tag specifications say that struct tags can be any string.
+The [struct tag specifications](https://go.dev/ref/spec#Struct_types) say that struct tags can be any string.
 
-The key/value syntax, the comma separator, and the space separator are conventions based on `reflect.StructTag` and `json` implementation.
+The key/value syntax, the comma separator, and the space separator are conventions based on [`reflect.StructTag`](https://pkg.go.dev/reflect#StructTag) and `json` implementation.
 
 `reflect.StructTag` behaves like the struct tags are `map[string]string`, but with one difference:
 The first key always wins if there are multiple keys with the same name.
@@ -111,6 +111,7 @@ Maybe the specification should clarify those points.
 
 - https://go.dev/ref/spec#Struct_types
 - https://go.dev/ref/spec#string_lit
+- https://pkg.go.dev/reflect#StructTag
 - https://github.com/golang/go/blob/411c250d64304033181c46413a6e9381e8fe9b82/src/reflect/type.go#L1030-L1108
 - https://github.com/golang/tools/blob/master/go/analysis/passes/structtag/structtag.go
 - https://github.com/fatih/structtag/blob/master/tags.go
