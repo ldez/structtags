@@ -13,11 +13,11 @@ type tuple struct {
 
 func TestFiller_Fill(t *testing.T) {
 	testCases := []struct {
-		desc               string
-		data               []tuple
-		escapeComma        bool
-		allowDuplicateKeys bool
-		expected           *Tag
+		desc              string
+		data              []tuple
+		escapeComma       bool
+		duplicateKeysMode DuplicateKeysMode
+		expected          *Tag
 	}{
 		{
 			desc: "option: no escape, no duplicate",
@@ -25,8 +25,8 @@ func TestFiller_Fill(t *testing.T) {
 				{key: "a", value: "b"},
 				{key: "d", value: "e"},
 			},
-			escapeComma:        false,
-			allowDuplicateKeys: false,
+			escapeComma:       false,
+			duplicateKeysMode: DuplicateKeysDeny,
 			expected: &Tag{
 				entries: []*Entry{
 					{
@@ -40,8 +40,8 @@ func TestFiller_Fill(t *testing.T) {
 						escapeComma: false,
 					},
 				},
-				escapeComma:        false,
-				allowDuplicateKeys: false,
+				escapeComma:       false,
+				duplicateKeysMode: DuplicateKeysDeny,
 			},
 		},
 		{
@@ -50,8 +50,8 @@ func TestFiller_Fill(t *testing.T) {
 				{key: "a", value: "b"},
 				{key: "d", value: "e"},
 			},
-			escapeComma:        true,
-			allowDuplicateKeys: false,
+			escapeComma:       true,
+			duplicateKeysMode: DuplicateKeysDeny,
 			expected: &Tag{
 				entries: []*Entry{
 					{
@@ -65,8 +65,8 @@ func TestFiller_Fill(t *testing.T) {
 						escapeComma: true,
 					},
 				},
-				escapeComma:        true,
-				allowDuplicateKeys: false,
+				escapeComma:       true,
+				duplicateKeysMode: DuplicateKeysDeny,
 			},
 		},
 		{
@@ -75,8 +75,8 @@ func TestFiller_Fill(t *testing.T) {
 				{key: "a", value: "b"},
 				{key: "d", value: "e"},
 			},
-			escapeComma:        false,
-			allowDuplicateKeys: true,
+			escapeComma:       false,
+			duplicateKeysMode: DuplicateKeysAllow,
 			expected: &Tag{
 				entries: []*Entry{
 					{
@@ -90,8 +90,8 @@ func TestFiller_Fill(t *testing.T) {
 						escapeComma: false,
 					},
 				},
-				escapeComma:        false,
-				allowDuplicateKeys: true,
+				escapeComma:       false,
+				duplicateKeysMode: DuplicateKeysAllow,
 			},
 		},
 		{
@@ -100,8 +100,8 @@ func TestFiller_Fill(t *testing.T) {
 				{key: "a", value: "b"},
 				{key: "d", value: "e"},
 			},
-			escapeComma:        true,
-			allowDuplicateKeys: true,
+			escapeComma:       true,
+			duplicateKeysMode: DuplicateKeysAllow,
 			expected: &Tag{
 				entries: []*Entry{
 					{
@@ -115,8 +115,8 @@ func TestFiller_Fill(t *testing.T) {
 						escapeComma: true,
 					},
 				},
-				escapeComma:        true,
-				allowDuplicateKeys: true,
+				escapeComma:       true,
+				duplicateKeysMode: DuplicateKeysAllow,
 			},
 		},
 	}
@@ -125,7 +125,7 @@ func TestFiller_Fill(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			filler := NewFiller(test.escapeComma, test.allowDuplicateKeys)
+			filler := NewFiller(test.escapeComma, test.duplicateKeysMode)
 
 			for _, d := range test.data {
 				require.NoError(t, filler.Fill(d.key, d.value))
@@ -137,7 +137,7 @@ func TestFiller_Fill(t *testing.T) {
 }
 
 func TestFiller_Fill_no_duplicate(t *testing.T) {
-	filler := NewFiller(false, false)
+	filler := NewFiller(false, DuplicateKeysDeny)
 
 	err := filler.Fill("a", "b")
 	require.NoError(t, err)
@@ -147,7 +147,7 @@ func TestFiller_Fill_no_duplicate(t *testing.T) {
 }
 
 func TestFiller_Fill_duplicate(t *testing.T) {
-	filler := NewFiller(false, true)
+	filler := NewFiller(false, DuplicateKeysAllow)
 
 	err := filler.Fill("a", "b")
 	require.NoError(t, err)
@@ -160,8 +160,8 @@ func TestFiller_Fill_duplicate(t *testing.T) {
 			{Key: "a", RawValue: "b"},
 			{Key: "a", RawValue: "c"},
 		},
-		escapeComma:        false,
-		allowDuplicateKeys: true,
+		escapeComma:       false,
+		duplicateKeysMode: DuplicateKeysAllow,
 	}
 
 	assert.Equal(t, expected, filler.Data())

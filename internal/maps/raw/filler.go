@@ -1,7 +1,15 @@
 package raw
 
+import "fmt"
+
 type Filler struct {
 	data Tag
+
+	duplicateKeysMode DuplicateKeysMode
+}
+
+func NewFiller(duplicateKeysMode DuplicateKeysMode) *Filler {
+	return &Filler{duplicateKeysMode: duplicateKeysMode}
 }
 
 func (f *Filler) Data() Tag {
@@ -10,9 +18,13 @@ func (f *Filler) Data() Tag {
 
 func (f *Filler) Fill(key, value string) error {
 	if f.data != nil && f.data[key] != "" {
-		// Ignore duplicated keys.
-		// TODO(ldez) add an option to through an error.
-		return nil
+		switch f.duplicateKeysMode {
+		case DuplicateKeysDeny:
+			return fmt.Errorf("duplicate key %q", key)
+
+		default:
+			return nil
+		}
 	}
 
 	if f.data == nil {

@@ -1,22 +1,18 @@
 package structured
 
-import (
-	"fmt"
-)
-
 // Filler fills the tag from a struct tag.
 type Filler struct {
 	data *Tag
 
-	escapeComma        bool
-	allowDuplicateKeys bool
+	escapeComma       bool
+	duplicateKeysMode DuplicateKeysMode
 }
 
 // NewFiller creates a new [Filler].
-func NewFiller(escapeComma, allowDuplicateKeys bool) *Filler {
+func NewFiller(escapeComma bool, duplicateKeysMode DuplicateKeysMode) *Filler {
 	return &Filler{
-		escapeComma:        escapeComma,
-		allowDuplicateKeys: allowDuplicateKeys,
+		escapeComma:       escapeComma,
+		duplicateKeysMode: duplicateKeysMode,
 	}
 }
 
@@ -28,11 +24,7 @@ func (f *Filler) Data() *Tag {
 // Fill fills the data from a struct tag.
 func (f *Filler) Fill(key, value string) error {
 	if f.data == nil {
-		f.data = NewTag(f.escapeComma, f.allowDuplicateKeys)
-	}
-
-	if !f.allowDuplicateKeys && f.data.Get(key) != nil {
-		return fmt.Errorf("duplicate tag %q", key)
+		f.data = NewTag(f.escapeComma, f.duplicateKeysMode)
 	}
 
 	return f.data.Add(&Entry{Key: key, RawValue: value})

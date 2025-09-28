@@ -8,7 +8,7 @@ import (
 )
 
 func TestFiller_Fill(t *testing.T) {
-	filler := NewFiller(true)
+	filler := NewFiller(true, DuplicateKeysIgnore)
 
 	err := filler.Fill("a", "b")
 	require.NoError(t, err)
@@ -25,7 +25,7 @@ func TestFiller_Fill(t *testing.T) {
 }
 
 func TestFiller_Fill_noescape(t *testing.T) {
-	filler := NewFiller(false)
+	filler := NewFiller(false, DuplicateKeysIgnore)
 
 	err := filler.Fill("a", "b")
 	require.NoError(t, err)
@@ -42,7 +42,7 @@ func TestFiller_Fill_noescape(t *testing.T) {
 }
 
 func TestFiller_Fill_duplicate(t *testing.T) {
-	filler := NewFiller(true)
+	filler := NewFiller(true, DuplicateKeysIgnore)
 
 	err := filler.Fill("a", "b")
 	require.NoError(t, err)

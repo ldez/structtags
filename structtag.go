@@ -13,8 +13,8 @@ import (
 
 // ParseToMap parses a struct tag to a `map[string]string`.
 // Ignore duplicated keys.
-func ParseToMap(tag string) (mapsraw.Tag, error) {
-	return mapsraw.Parse(tag)
+func ParseToMap(tag string, options *mapsraw.Options) (mapsraw.Tag, error) {
+	return mapsraw.Parse(tag, options)
 }
 
 // ParseToMapMultikeys parses a struct tag to a `map[string][]string`.
@@ -26,26 +26,26 @@ func ParseToMapMultikeys(tag string) (mapsmultikeys.Tag, error) {
 // ParseToMapValues parses a struct tag to a `map[string][]string`.
 // The value is split on comma.
 // Ignore duplicated keys.
-func ParseToMapValues(tag string, escapeComma bool) (mapsvalues.Tag, error) {
-	return mapsvalues.Parse(tag, escapeComma)
+func ParseToMapValues(tag string, options *mapsvalues.Options) (mapsvalues.Tag, error) {
+	return mapsvalues.Parse(tag, options)
 }
 
 // ParseToSlice parses a struct tag to a slice of [sliceraw.Tag].
-func ParseToSlice(tag string) (sliceraw.Tags, error) {
-	return sliceraw.Parse(tag)
+func ParseToSlice(tag string, options *sliceraw.Options) (sliceraw.Tags, error) {
+	return sliceraw.Parse(tag, options)
 }
 
 // ParseToSliceValues parses a struct tag to a slice of [slicevalues.Tag].
 // The value is split on comma.
-func ParseToSliceValues(tag string, escapeComma bool) (slicevalues.Tags, error) {
-	return slicevalues.Parse(tag, escapeComma)
+func ParseToSliceValues(tag string, options *slicevalues.Options) (slicevalues.Tags, error) {
+	return slicevalues.Parse(tag, options)
 }
 
 // ParseToSliceStructured parses a struct tag to a [structured.Tag].
 // Allows modifying the struct tags.
 // The value is split on comma.
-func ParseToSliceStructured(tag string, opt *structured.Options) (*structured.Tag, error) {
-	return structured.Parse(tag, opt)
+func ParseToSliceStructured(tag string, options *structured.Options) (*structured.Tag, error) {
+	return structured.Parse(tag, options)
 }
 
 // ParseToFatih parses a struct tag to a [*structtag.Tags].

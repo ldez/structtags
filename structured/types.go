@@ -9,29 +9,41 @@ import (
 	"github.com/ldez/structtags/parser"
 )
 
+type DuplicateKeysMode int
+
+const (
+	// DuplicateKeysIgnore skips silently duplicate keys.
+	DuplicateKeysIgnore DuplicateKeysMode = iota
+
+	// DuplicateKeysDeny throws an error when duplicate keys are found.
+	DuplicateKeysDeny
+
+	// DuplicateKeysAllow NOT RECOMMENDED: this does not follow the struct tag conventions.
+	DuplicateKeysAllow
+)
+
 // Options for the parser.
 type Options struct {
 	// EscapeComma is used to escape the comma character within the value.
 	EscapeComma bool
 
-	// AllowDuplicateKeys allows duplicate keys.
-	// NOT RECOMMENDED TO USE IT: this does not follow the struct tag conventions.
-	AllowDuplicateKeys bool
+	// DuplicateKeysMode allows duplicate keys.
+	DuplicateKeysMode DuplicateKeysMode
 }
 
 // Tag represents a struct tag.
 type Tag struct {
 	entries []*Entry
 
-	escapeComma        bool
-	allowDuplicateKeys bool
+	escapeComma       bool
+	duplicateKeysMode DuplicateKeysMode
 }
 
 // NewTag creates a new [Tag].
-func NewTag(escapeComma, allowDuplicateKeys bool) *Tag {
+func NewTag(escapeComma bool, duplicateKeysMode DuplicateKeysMode) *Tag {
 	return &Tag{
-		escapeComma:        escapeComma,
-		allowDuplicateKeys: allowDuplicateKeys,
+		escapeComma:       escapeComma,
+		duplicateKeysMode: duplicateKeysMode,
 	}
 }
 
@@ -66,8 +78,24 @@ func (t *Tag) Add(tag *Entry) error {
 		return nil
 	}
 
-	if !t.allowDuplicateKeys && t.Get(tag.Key) != nil {
-		return fmt.Errorf("duplicate tag %q", tag.Key)
+	switch t.duplicateKeysMode {
+	case DuplicateKeysIgnore:
+		if t.Get(tag.Key) != nil {
+			return nil
+		}
+
+	case DuplicateKeysDeny:
+		if t.Get(tag.Key) != nil {
+			return fmt.Errorf("duplicate key %q", tag.Key)
+		}
+
+	case DuplicateKeysAllow:
+		// Do nothing.
+
+	default:
+		if t.Get(tag.Key) != nil {
+			return nil
+		}
 	}
 
 	tag.escapeComma = t.escapeComma

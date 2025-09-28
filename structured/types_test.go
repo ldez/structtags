@@ -9,7 +9,7 @@ import (
 )
 
 func TestTag_Get(t *testing.T) {
-	tag := NewTag(false, false)
+	tag := NewTag(false, DuplicateKeysIgnore)
 
 	element := &Entry{Key: "test", RawValue: "a"}
 	tag.entries = append(tag.entries, element)
@@ -21,14 +21,14 @@ func TestTag_Get(t *testing.T) {
 }
 
 func TestTag_Get_not_found(t *testing.T) {
-	tag := NewTag(false, false)
+	tag := NewTag(false, DuplicateKeysIgnore)
 
 	entry := tag.Get("test")
 	require.Nil(t, entry)
 }
 
 func TestTag_Add(t *testing.T) {
-	tag := NewTag(false, false)
+	tag := NewTag(false, DuplicateKeysIgnore)
 
 	err := tag.Add(&Entry{Key: "test", RawValue: "a"})
 	require.NoError(t, err)
@@ -39,7 +39,7 @@ func TestTag_Add(t *testing.T) {
 }
 
 func TestTag_Add_duplicate_error(t *testing.T) {
-	tag := NewTag(false, false)
+	tag := NewTag(false, DuplicateKeysDeny)
 
 	a := &Entry{Key: "test", RawValue: "a"}
 
@@ -55,7 +55,7 @@ func TestTag_Add_duplicate_error(t *testing.T) {
 }
 
 func TestTag_Add_duplicate(t *testing.T) {
-	tag := NewTag(false, true)
+	tag := NewTag(false, DuplicateKeysAllow)
 
 	a := &Entry{Key: "test", RawValue: "a"}
 
@@ -71,7 +71,7 @@ func TestTag_Add_duplicate(t *testing.T) {
 }
 
 func TestTag_Delete(t *testing.T) {
-	tag := NewTag(false, false)
+	tag := NewTag(false, DuplicateKeysIgnore)
 
 	tag.entries = append(tag.entries, &Entry{Key: "test", RawValue: "a"})
 
@@ -81,7 +81,7 @@ func TestTag_Delete(t *testing.T) {
 }
 
 func TestTag_Delete_not_found(t *testing.T) {
-	tag := NewTag(false, false)
+	tag := NewTag(false, DuplicateKeysIgnore)
 
 	tag.entries = append(tag.entries, &Entry{Key: "test", RawValue: "a"})
 
@@ -91,7 +91,7 @@ func TestTag_Delete_not_found(t *testing.T) {
 }
 
 func TestTag_Seq(t *testing.T) {
-	tag := NewTag(false, false)
+	tag := NewTag(false, DuplicateKeysIgnore)
 
 	tag.entries = append(tag.entries, &Entry{Key: "test", RawValue: "a"})
 
@@ -124,7 +124,7 @@ func TestTag_String(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			tag := NewTag(false, false)
+			tag := NewTag(false, DuplicateKeysIgnore)
 			tag.entries = test.entries
 
 			assert.Equal(t, test.expected, tag.String())

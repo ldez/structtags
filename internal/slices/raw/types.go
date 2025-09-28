@@ -5,6 +5,25 @@ import (
 	"strings"
 )
 
+type DuplicateKeysMode int
+
+const (
+	// DuplicateKeysIgnore skips silently duplicate keys.
+	DuplicateKeysIgnore DuplicateKeysMode = iota
+
+	// DuplicateKeysDeny throws an error when duplicate keys are found.
+	DuplicateKeysDeny
+
+	// DuplicateKeysAllow NOT RECOMMENDED: this does not follow the struct tag conventions.
+	DuplicateKeysAllow
+)
+
+// Options for the parser.
+type Options struct {
+	// DuplicateKeysMode allows duplicate keys.
+	DuplicateKeysMode DuplicateKeysMode
+}
+
 type Tags []Tag
 
 func (t Tags) String() string {

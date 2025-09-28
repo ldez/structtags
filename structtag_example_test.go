@@ -5,6 +5,8 @@ import (
 	"reflect"
 
 	"github.com/ldez/structtags"
+	mapsvalues "github.com/ldez/structtags/internal/maps/values"
+	slicevalues "github.com/ldez/structtags/internal/slices/values"
 	"github.com/ldez/structtags/structured"
 )
 
@@ -16,7 +18,7 @@ func ExampleParseToMap() {
 	// Gets the raw tag from the struct field.
 	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
 
-	data, err := structtags.ParseToMap(string(rawTag))
+	data, err := structtags.ParseToMap(string(rawTag), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -55,7 +57,7 @@ func ExampleParseToMapValues() {
 	// Gets the raw tag from the struct field.
 	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
 
-	data, err := structtags.ParseToMapValues(string(rawTag), false)
+	data, err := structtags.ParseToMapValues(string(rawTag), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +77,7 @@ func ExampleParseToMapValues_escaped_comma() {
 	// Gets the raw tag from the struct field.
 	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
 
-	data, err := structtags.ParseToMapValues(string(rawTag), true)
+	data, err := structtags.ParseToMapValues(string(rawTag), &mapsvalues.Options{EscapeComma: true})
 	if err != nil {
 		panic(err)
 	}
@@ -95,7 +97,7 @@ func ExampleParseToSlice() {
 	// Gets the raw tag from the struct field.
 	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
 
-	data, err := structtags.ParseToSlice(string(rawTag))
+	data, err := structtags.ParseToSlice(string(rawTag), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -117,7 +119,7 @@ func ExampleParseToSliceValues() {
 	// Gets the raw tag from the struct field.
 	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
 
-	data, err := structtags.ParseToSliceValues(string(rawTag), false)
+	data, err := structtags.ParseToSliceValues(string(rawTag), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -139,7 +141,7 @@ func ExampleParseToSliceValues_escaped_comma() {
 	// Gets the raw tag from the struct field.
 	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
 
-	data, err := structtags.ParseToSliceValues(string(rawTag), true)
+	data, err := structtags.ParseToSliceValues(string(rawTag), &slicevalues.Options{EscapeComma: true})
 	if err != nil {
 		panic(err)
 	}

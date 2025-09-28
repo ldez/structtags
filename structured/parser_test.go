@@ -75,7 +75,7 @@ func TestParse(t *testing.T) {
 		{
 			desc:    "identical keys",
 			tag:     `json:"a" json:"b"`,
-			options: &Options{AllowDuplicateKeys: true},
+			options: &Options{DuplicateKeysMode: DuplicateKeysAllow},
 			expected: []*Entry{
 				{Key: "json", RawValue: "a"},
 				{Key: "json", RawValue: "b"},

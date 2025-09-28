@@ -60,7 +60,7 @@ func TestParse(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			tags, err := Parse(test.tag)
+			tags, err := Parse(test.tag, nil)
 			require.NoError(t, err)
 
 			assert.Equal(t, test.expected, tags)

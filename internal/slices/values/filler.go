@@ -1,20 +1,25 @@
 package values
 
 import (
+	"fmt"
+
 	"github.com/ldez/structtags/parser"
 )
 
 type Filler struct {
-	data        Tags
-	escapeComma bool
+	data Tags
 
 	keys map[string]struct{}
+
+	escapeComma       bool
+	duplicateKeysMode DuplicateKeysMode
 }
 
-func NewFiller(escapeComma bool) *Filler {
+func NewFiller(escapeComma bool, duplicateKeysMode DuplicateKeysMode) *Filler {
 	return &Filler{
-		escapeComma: escapeComma,
-		keys:        make(map[string]struct{}),
+		keys:              make(map[string]struct{}),
+		escapeComma:       escapeComma,
+		duplicateKeysMode: duplicateKeysMode,
 	}
 }
 
@@ -24,9 +29,16 @@ func (f *Filler) Data() Tags {
 
 func (f *Filler) Fill(key, value string) error {
 	if _, ok := f.keys[key]; ok {
-		// Ignore duplicated keys.
-		// TODO(ldez) add an option to through an error.
-		return nil
+		switch f.duplicateKeysMode {
+		case DuplicateKeysIgnore:
+			return nil
+
+		case DuplicateKeysDeny:
+			return fmt.Errorf("duplicate key %q", key)
+
+		case DuplicateKeysAllow:
+			// Do nothing.
+		}
 	}
 
 	f.keys[key] = struct{}{}
