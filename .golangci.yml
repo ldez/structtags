@@ -27,6 +27,7 @@ linters:
     - tparallel
     - varnamelen
     - wrapcheck
+    - tagalign
     - nilnil # This is expected in this project
 
   settings:
@@ -61,6 +62,10 @@ linters:
         text: "Tag returns generic interface \\(T\\) of type param any"
         linters:
           - ireturn
+      - path: structtag_example_test.go
+        text: "SA5008: duplicate struct tag \"b\""
+        linters:
+          - staticcheck
 
 issues:
   max-issues-per-linter: 0

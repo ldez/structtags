@@ -63,32 +63,70 @@ Instead of rewriting the wheel for each project, I also provided a package with 
 
 ## Usage
 
-- `structtags.ParseToMap(tag)`:
-    - Parses a struct tag to a `map[string]string`.
-- `structtags.ParseToMapValues(tag, escapeComma)`:
-    - Parses a struct tag to a `map[string][]string`.
-    - The value is split on a comma.
-    - Option: comma escaped by backslash.
-- `structtags.ParseToMapMultikeys(tag)` (not recommended):
-    - Parses a struct tag to a `map[string][]string`.
-    - For non-conventional tags where the key is repeated.
-- `structtags.ParseToSlice(tag)`:
-    - Parses a struct tag to a slice of `type Tag struct { Key, Value string }`.
-- `structtags.ParseToSliceValues(tag, escapeComma)`:
-    - Parses a struct tag to a slice of `type Tag struct { Key string, Value []string }`.
-    - The value is split on a comma.
-    - Option: comma escaped by backslash.
-- `structtags.ParseToSliceStructured(tag, options)`:
-    - Parses a struct tag to a `*structured.Tag`.
-    - The value is split on a comma.
-    - The value is parsed lazily: only if you call `Entry.Values()`
-    - Options:
-        - Comma escaped by backslash.
-        - Multiple keys with the same name. (non-conventional, so not recommended)
-- `structtags.ParseToFatih(tag, escapeComma)`:
-    - Parses a struct tag to a `*structtag.Tags`.
-    - The value is split on a comma.
-    - Option: comma escaped by backslash.
+### `structtags.ParseToMap(tag)`
+
+Parses a struct tag to a `map[string]string`.
+
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToMap)
+
+### `structtags.ParseToMapValues(tag, escapeComma)`
+
+Parses a struct tag to a `map[string][]string`.
+
+The value is split on a comma.
+
+Option: comma escaped by backslash.
+
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToMapValues)
+
+### `structtags.ParseToMapMultikeys(tag)`
+
+NOT RECOMMENDED.
+For non-conventional tags where the key is repeated.
+
+Parses a struct tag to a `map[string][]string`.
+
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToMapMultikeys)
+
+### `structtags.ParseToSlice(tag)`
+
+Parses a struct tag to a slice of `type Tag struct { Key, Value string }`.
+
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSlice)
+
+### `structtags.ParseToSliceValues(tag, escapeComma)`
+
+Parses a struct tag to a slice of `type Tag struct { Key string, Value []string }`.
+
+The value is split on a comma.
+
+Option: comma escaped by backslash.
+
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSliceValues)
+
+### `structtags.ParseToSliceStructured(tag, options)`
+
+Parses a struct tag to a `*structured.Tag`.
+
+The value is split on a comma.
+
+The value is parsed lazily: only if you call `Entry.Values()`
+ 
+Options:
+- `EscapeComma`: Comma escaped by backslash.
+- `AllowDuplicateKeys`: Multiple keys with the same name. (non-conventional, so not recommended)
+
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSliceStructured)
+
+### `structtags.ParseToFatih(tag, escapeComma)`
+
+Parses a struct tag to a `*structtag.Tags`.
+
+The value is split on a comma.
+
+Option: comma escaped by backslash.
+
+### Custom Parser
 
 The `parser` package provides the tooling to parse a struct tag and its associated value.
 
