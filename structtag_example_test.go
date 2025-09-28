@@ -5,9 +5,9 @@ import (
 	"reflect"
 
 	"github.com/ldez/structtags"
-	mapsvalues "github.com/ldez/structtags/internal/maps/values"
-	slicevalues "github.com/ldez/structtags/internal/slices/values"
-	"github.com/ldez/structtags/structured"
+	mapsvalues "github.com/ldez/structtags/variant/maps/values"
+	slicevalues "github.com/ldez/structtags/variant/slices/values"
+	"github.com/ldez/structtags/variant/structured"
 )
 
 func ExampleParseToMap() {

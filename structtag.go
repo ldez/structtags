@@ -2,13 +2,13 @@ package structtags
 
 import (
 	"github.com/fatih/structtag"
-	mapsmultikeys "github.com/ldez/structtags/internal/maps/multikeys"
-	mapsraw "github.com/ldez/structtags/internal/maps/raw"
-	mapsvalues "github.com/ldez/structtags/internal/maps/values"
-	slicesfatih "github.com/ldez/structtags/internal/slices/fatih"
-	sliceraw "github.com/ldez/structtags/internal/slices/raw"
-	slicevalues "github.com/ldez/structtags/internal/slices/values"
-	"github.com/ldez/structtags/structured"
+	mapsmultikeys "github.com/ldez/structtags/variant/maps/multikeys"
+	mapsraw "github.com/ldez/structtags/variant/maps/raw"
+	mapsvalues "github.com/ldez/structtags/variant/maps/values"
+	slicesfatih "github.com/ldez/structtags/variant/slices/fatih"
+	sliceraw "github.com/ldez/structtags/variant/slices/raw"
+	slicevalues "github.com/ldez/structtags/variant/slices/values"
+	"github.com/ldez/structtags/variant/structured"
 )
 
 // ParseToMap parses a struct tag to a `map[string]string`.
