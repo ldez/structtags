@@ -100,3 +100,18 @@ func TestParse(t *testing.T) {
 		})
 	}
 }
+
+func TestParse_options(t *testing.T) {
+	tags, err := Parse(`a:"1\\,2"`, WithEscapeComma())
+	require.NoError(t, err)
+
+	expected := []*Entry{
+		{
+			Key:         "a",
+			RawValue:    "1\\,2",
+			escapeComma: true,
+		},
+	}
+
+	assert.Equal(t, expected, slices.Collect(tags.Seq()))
+}

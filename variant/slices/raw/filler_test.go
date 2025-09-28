@@ -24,7 +24,7 @@ func TestFiller_Fill(t *testing.T) {
 	assert.Equal(t, expected, filler.Data())
 }
 
-func TestFiller_Fill_duplicate(t *testing.T) {
+func TestFiller_Fill_duplicate_ignore(t *testing.T) {
 	filler := NewFiller(DuplicateKeysIgnore)
 
 	err := filler.Fill("a", "b")
@@ -35,6 +35,33 @@ func TestFiller_Fill_duplicate(t *testing.T) {
 
 	expected := Tags{
 		{Key: "a", Value: "b"},
+	}
+
+	assert.Equal(t, expected, filler.Data())
+}
+
+func TestFiller_Fill_duplicate_deny(t *testing.T) {
+	filler := NewFiller(DuplicateKeysDeny)
+
+	err := filler.Fill("a", "b")
+	require.NoError(t, err)
+
+	err = filler.Fill("a", "c")
+	require.EqualError(t, err, `duplicate key "a"`)
+}
+
+func TestFiller_Fill_duplicate_allow(t *testing.T) {
+	filler := NewFiller(DuplicateKeysAllow)
+
+	err := filler.Fill("a", "b")
+	require.NoError(t, err)
+
+	err = filler.Fill("a", "c")
+	require.NoError(t, err)
+
+	expected := Tags{
+		{Key: "a", Value: "b"},
+		{Key: "a", Value: "c"},
 	}
 
 	assert.Equal(t, expected, filler.Data())

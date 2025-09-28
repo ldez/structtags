@@ -136,7 +136,27 @@ func TestFiller_Fill(t *testing.T) {
 	}
 }
 
-func TestFiller_Fill_no_duplicate(t *testing.T) {
+func TestFiller_Fill_duplicate_ignore(t *testing.T) {
+	filler := NewFiller(false, DuplicateKeysIgnore)
+
+	err := filler.Fill("a", "b")
+	require.NoError(t, err)
+
+	err = filler.Fill("a", "c")
+	require.NoError(t, err)
+
+	expected := &Tag{
+		entries: []*Entry{
+			{Key: "a", RawValue: "b"},
+		},
+		escapeComma:       false,
+		duplicateKeysMode: DuplicateKeysIgnore,
+	}
+
+	assert.Equal(t, expected, filler.Data())
+}
+
+func TestFiller_Fill_duplicate_deny(t *testing.T) {
 	filler := NewFiller(false, DuplicateKeysDeny)
 
 	err := filler.Fill("a", "b")
@@ -146,7 +166,7 @@ func TestFiller_Fill_no_duplicate(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestFiller_Fill_duplicate(t *testing.T) {
+func TestFiller_Fill_duplicate_allow(t *testing.T) {
 	filler := NewFiller(false, DuplicateKeysAllow)
 
 	err := filler.Fill("a", "b")

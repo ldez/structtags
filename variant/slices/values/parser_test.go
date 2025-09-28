@@ -79,3 +79,8 @@ func TestParse(t *testing.T) {
 		})
 	}
 }
+
+func TestParse_options(t *testing.T) {
+	_, err := Parse(`a:"1" a:"2"`, WithDuplicateKeysMode(DuplicateKeysDeny))
+	require.EqualError(t, err, `duplicate key "a"`)
+}
