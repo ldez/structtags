@@ -1,7 +1,5 @@
 package multikeys
 
-type Tag map[string][]string
-
 type Filler struct {
 	data Tag
 }

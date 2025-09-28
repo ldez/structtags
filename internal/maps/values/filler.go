@@ -2,8 +2,6 @@ package values
 
 import "github.com/ldez/structtags/parser"
 
-type Tag map[string][]string
-
 type Filler struct {
 	data        Tag
 	escapeComma bool
