@@ -18,6 +18,12 @@ func (f *Filler) Data() Tag {
 }
 
 func (f *Filler) Fill(key, value string) error {
+	if f.data != nil && len(f.data[key]) > 0 {
+		// Ignore duplicated keys.
+		// TODO(ldez) add an option to through an error.
+		return nil
+	}
+
 	if f.data == nil {
 		f.data = Tag{}
 	}

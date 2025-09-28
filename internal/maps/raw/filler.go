@@ -10,7 +10,7 @@ func (f *Filler) Data() Tag {
 
 func (f *Filler) Fill(key, value string) error {
 	if f.data != nil && f.data[key] != "" {
-		// Ignore duplicated key.
+		// Ignore duplicated keys.
 		// TODO(ldez) add an option to through an error.
 		return nil
 	}

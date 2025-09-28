@@ -56,7 +56,7 @@ func TestParse(t *testing.T) {
 		{
 			desc:     "identical keys",
 			tag:      `json:"a" json:"b"`,
-			expected: Tag{"json": {"a", "b"}},
+			expected: Tag{"json": {"a"}},
 		},
 	}
 

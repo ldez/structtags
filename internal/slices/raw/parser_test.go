@@ -59,7 +59,6 @@ func TestParse(t *testing.T) {
 			tag:  `json:"a" json:"b"`,
 			expected: Tags{
 				{Key: "json", Value: "a"},
-				{Key: "json", Value: "b"},
 			},
 		},
 	}

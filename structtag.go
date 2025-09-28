@@ -12,6 +12,7 @@ import (
 )
 
 // ParseToMap parses a struct tag to a `map[string]string`.
+// Ignore duplicated keys.
 func ParseToMap(tag string) (mapsraw.Tag, error) {
 	return mapsraw.Parse(tag)
 }
@@ -24,6 +25,7 @@ func ParseToMapMultikeys(tag string) (mapsmultikeys.Tag, error) {
 
 // ParseToMapValues parses a struct tag to a `map[string][]string`.
 // The value is split on comma.
+// Ignore duplicated keys.
 func ParseToMapValues(tag string, escapeComma bool) (mapsvalues.Tag, error) {
 	return mapsvalues.Parse(tag, escapeComma)
 }

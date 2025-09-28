@@ -51,7 +51,7 @@ func TestFiller_Fill_duplicate(t *testing.T) {
 	require.NoError(t, err)
 
 	expected := Tag{
-		"a": {"b", "c"},
+		"a": {"b"},
 	}
 
 	assert.Equal(t, expected, filler.Data())

@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// Tag is a key/value map.
 type Tag map[string]string
 
 func (m Tag) String() string {

@@ -7,11 +7,14 @@ import (
 type Filler struct {
 	data        Tags
 	escapeComma bool
+
+	keys map[string]struct{}
 }
 
 func NewFiller(escapeComma bool) *Filler {
 	return &Filler{
 		escapeComma: escapeComma,
+		keys:        make(map[string]struct{}),
 	}
 }
 
@@ -20,6 +23,14 @@ func (f *Filler) Data() Tags {
 }
 
 func (f *Filler) Fill(key, value string) error {
+	if _, ok := f.keys[key]; ok {
+		// Ignore duplicated keys.
+		// TODO(ldez) add an option to through an error.
+		return nil
+	}
+
+	f.keys[key] = struct{}{}
+
 	values, err := parser.Value(value, f.escapeComma)
 	if err != nil {
 		return err

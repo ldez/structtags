@@ -8,7 +8,7 @@ import (
 )
 
 func TestFiller_Fill(t *testing.T) {
-	filler := Filler{}
+	filler := NewFiller()
 
 	err := filler.Fill("a", "b")
 	require.NoError(t, err)
@@ -25,7 +25,7 @@ func TestFiller_Fill(t *testing.T) {
 }
 
 func TestFiller_Fill_duplicate(t *testing.T) {
-	filler := Filler{}
+	filler := NewFiller()
 
 	err := filler.Fill("a", "b")
 	require.NoError(t, err)
@@ -35,7 +35,6 @@ func TestFiller_Fill_duplicate(t *testing.T) {
 
 	expected := Tags{
 		{Key: "a", Value: "b"},
-		{Key: "a", Value: "c"},
 	}
 
 	assert.Equal(t, expected, filler.Data())

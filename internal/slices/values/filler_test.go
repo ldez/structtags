@@ -52,7 +52,6 @@ func TestFiller_Fill_duplicate(t *testing.T) {
 
 	expected := Tags{
 		{Key: "a", Values: []string{"b"}},
-		{Key: "a", Values: []string{"c"}},
 	}
 
 	assert.Equal(t, expected, filler.Data())
