@@ -5,19 +5,17 @@ import "github.com/ldez/structtags/parser"
 // Parse parses a struct tag to a [Tag].
 // Allows modifying the struct tags.
 // The value is split on comma.
-func Parse(tag string, options *Options) (*Tag, error) {
-	var escapeComma bool
+// Ignore duplicated keys by default.
+func Parse(tag string, options ...Option) (*Tag, error) {
+	var cfg config
 
-	var duplicateKeysMode DuplicateKeysMode
-
-	if options != nil {
-		escapeComma = options.EscapeComma
-		duplicateKeysMode = options.DuplicateKeysMode
+	for _, opt := range options {
+		opt(&cfg)
 	}
 
 	if tag == "" {
-		return NewTag(escapeComma, duplicateKeysMode), nil
+		return NewTag(cfg.EscapeComma, cfg.DuplicateKeysMode), nil
 	}
 
-	return parser.Tag(tag, NewFiller(escapeComma, duplicateKeysMode))
+	return parser.Tag(tag, NewFiller(cfg.EscapeComma, cfg.DuplicateKeysMode))
 }

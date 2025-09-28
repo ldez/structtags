@@ -15,10 +15,18 @@ const (
 	DuplicateKeysDeny
 )
 
-// Options for the parser.
-type Options struct {
+// config for the parser.
+type config struct {
 	// DuplicateKeysMode allows duplicate keys.
 	DuplicateKeysMode DuplicateKeysMode
+}
+
+type Option func(*config)
+
+func WithDuplicateKeysMode(mode DuplicateKeysMode) Option {
+	return func(options *config) {
+		options.DuplicateKeysMode = mode
+	}
 }
 
 // Tag is a key/value map.

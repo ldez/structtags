@@ -12,7 +12,7 @@ func TestParse(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		tag      string
-		options  *Options
+		options  []Option
 		expected []*Entry
 	}{
 		{
@@ -75,7 +75,7 @@ func TestParse(t *testing.T) {
 		{
 			desc:    "identical keys",
 			tag:     `json:"a" json:"b"`,
-			options: &Options{DuplicateKeysMode: DuplicateKeysAllow},
+			options: []Option{WithDuplicateKeysMode(DuplicateKeysAllow)},
 			expected: []*Entry{
 				{Key: "json", RawValue: "a"},
 				{Key: "json", RawValue: "b"},
@@ -87,7 +87,7 @@ func TestParse(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			tags, err := Parse(test.tag, test.options)
+			tags, err := Parse(test.tag, test.options...)
 			require.NoError(t, err)
 
 			if test.expected == nil {

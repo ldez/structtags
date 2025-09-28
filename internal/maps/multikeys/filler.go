@@ -4,6 +4,10 @@ type Filler struct {
 	data Tag
 }
 
+func NewFiller() *Filler {
+	return &Filler{}
+}
+
 func (f *Filler) Data() Tag {
 	return f.data
 }

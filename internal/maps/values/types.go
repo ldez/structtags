@@ -18,13 +18,27 @@ const (
 	DuplicateKeysAllow
 )
 
-// Options for the parser.
-type Options struct {
+// config for the parser.
+type config struct {
 	// EscapeComma is used to escape the comma character within the value.
 	EscapeComma bool
 
 	// DuplicateKeysMode allows duplicate keys.
 	DuplicateKeysMode DuplicateKeysMode
+}
+
+type Option func(*config)
+
+func WithEscapeComma() Option {
+	return func(options *config) {
+		options.EscapeComma = true
+	}
+}
+
+func WithDuplicateKeysMode(mode DuplicateKeysMode) Option {
+	return func(opts *config) {
+		opts.DuplicateKeysMode = mode
+	}
 }
 
 // Tag is a key/values map.

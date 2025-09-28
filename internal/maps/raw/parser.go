@@ -3,13 +3,13 @@ package raw
 import "github.com/ldez/structtags/parser"
 
 // Parse parses a struct tag to a `map[string]string`.
-// Ignore duplicated keys.
-func Parse(tag string, options *Options) (Tag, error) {
-	var duplicateKeysMode DuplicateKeysMode
+// Ignore duplicated keys by default.
+func Parse(tag string, options ...Option) (Tag, error) {
+	var cfg config
 
-	if options != nil {
-		duplicateKeysMode = options.DuplicateKeysMode
+	for _, opt := range options {
+		opt(&cfg)
 	}
 
-	return parser.Tag(tag, NewFiller(duplicateKeysMode))
+	return parser.Tag(tag, NewFiller(cfg.DuplicateKeysMode))
 }

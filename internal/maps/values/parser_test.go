@@ -64,7 +64,7 @@ func TestParse(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			tags, err := Parse(test.tag, &Options{EscapeComma: true})
+			tags, err := Parse(test.tag, WithEscapeComma())
 			require.NoError(t, err)
 
 			assert.Equal(t, test.expected, tags)
