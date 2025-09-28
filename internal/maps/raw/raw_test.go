@@ -31,5 +31,9 @@ func TestFiller_Fill_duplicate(t *testing.T) {
 	require.NoError(t, err)
 
 	err = filler.Fill("a", "c")
-	require.Error(t, err)
+	require.NoError(t, err)
+
+	expected := map[string]string{"a": "b"}
+
+	assert.Equal(t, expected, filler.Data())
 }

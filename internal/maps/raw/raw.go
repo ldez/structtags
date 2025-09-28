@@ -1,7 +1,5 @@
 package raw
 
-import "fmt"
-
 type Filler struct {
 	data map[string]string
 }
@@ -12,7 +10,9 @@ func (f *Filler) Data() map[string]string {
 
 func (f *Filler) Fill(key, value string) error {
 	if f.data != nil && f.data[key] != "" {
-		return fmt.Errorf("duplicate tag %q", key)
+		// Ignore duplicated key.
+		// TODO(ldez) add an option to through an error.
+		return nil
 	}
 
 	if f.data == nil {
