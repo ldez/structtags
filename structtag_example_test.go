@@ -21,7 +21,8 @@ func ExampleParseToMap() {
 		panic(err)
 	}
 
-	fmt.Println(data)
+	// cast to map only to have a deterministic output for the example.
+	fmt.Println(map[string]string(data))
 
 	// Output:
 	// map[a:1,2 b:hello]
@@ -97,10 +98,13 @@ func ExampleParseToSlice() {
 		panic(err)
 	}
 
-	fmt.Println(data)
+	for _, datum := range data {
+		fmt.Println(datum)
+	}
 
 	// Output:
-	// [{a 1,2} {b hello}]
+	// {a 1,2}
+	// {b hello}
 }
 
 func ExampleParseToSliceValues() {
@@ -116,10 +120,13 @@ func ExampleParseToSliceValues() {
 		panic(err)
 	}
 
-	fmt.Println(data)
+	for _, datum := range data {
+		fmt.Println(datum)
+	}
 
 	// Output:
-	// [{a [1 2]} {b [hello\ world]}]
+	// {a [1 2]}
+	// {b [hello\ world]}
 }
 
 func ExampleParseToSliceValues_escaped_comma() {
@@ -135,10 +142,13 @@ func ExampleParseToSliceValues_escaped_comma() {
 		panic(err)
 	}
 
-	fmt.Println(data)
+	for _, datum := range data {
+		fmt.Println(datum)
+	}
 
 	// Output:
-	// [{a [1 2]} {b [hello\,world]}]
+	// {a [1 2]}
+	// {b [hello\,world]}
 }
 
 func ExampleParseToSliceStructured() {

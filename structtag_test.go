@@ -5,6 +5,9 @@ import (
 	"testing"
 
 	"github.com/fatih/structtag"
+	mapsmultikeys "github.com/ldez/structtags/internal/maps/multikeys"
+	mapsraw "github.com/ldez/structtags/internal/maps/raw"
+	mapsvalues "github.com/ldez/structtags/internal/maps/values"
 	sliceraw "github.com/ldez/structtags/internal/slices/raw"
 	slicevalues "github.com/ldez/structtags/internal/slices/values"
 	"github.com/ldez/structtags/structured"
@@ -16,7 +19,7 @@ func TestParseToMap(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		tag      string
-		expected map[string]string
+		expected mapsraw.Tag
 	}{
 		{
 			desc:     "no tag",
@@ -26,27 +29,27 @@ func TestParseToMap(t *testing.T) {
 		{
 			desc:     "empty value",
 			tag:      `json:""`,
-			expected: map[string]string{"json": ""},
+			expected: mapsraw.Tag{"json": ""},
 		},
 		{
 			desc:     "simple value",
 			tag:      `json:"a"`,
-			expected: map[string]string{"json": "a"},
+			expected: mapsraw.Tag{"json": "a"},
 		},
 		{
 			desc:     "multiple values",
 			tag:      `json:"a,b,c"`,
-			expected: map[string]string{"json": "a,b,c"},
+			expected: mapsraw.Tag{"json": "a,b,c"},
 		},
 		{
 			desc:     "quoted value",
 			tag:      `json:"a:\"b\""`,
-			expected: map[string]string{"json": "a:\"b\""},
+			expected: mapsraw.Tag{"json": "a:\"b\""},
 		},
 		{
 			desc: "multiple empty tag",
 			tag:  `json:"" yaml:""`,
-			expected: map[string]string{
+			expected: mapsraw.Tag{
 				"json": "",
 				"yaml": "",
 			},
@@ -54,7 +57,7 @@ func TestParseToMap(t *testing.T) {
 		{
 			desc: "multiple tag",
 			tag:  `json:"a" yaml:"b"`,
-			expected: map[string]string{
+			expected: mapsraw.Tag{
 				"json": "a",
 				"yaml": "b",
 			},
@@ -77,7 +80,7 @@ func TestParseToMapMultikeys(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		tag      string
-		expected map[string][]string
+		expected mapsmultikeys.Tag
 	}{
 		{
 			desc:     "no tag",
@@ -87,42 +90,42 @@ func TestParseToMapMultikeys(t *testing.T) {
 		{
 			desc:     "empty value",
 			tag:      `json:""`,
-			expected: map[string][]string{"json": {""}},
+			expected: mapsmultikeys.Tag{"json": {""}},
 		},
 		{
 			desc:     "simple value",
 			tag:      `json:"a"`,
-			expected: map[string][]string{"json": {"a"}},
+			expected: mapsmultikeys.Tag{"json": {"a"}},
 		},
 		{
 			desc:     "multiple values",
 			tag:      `json:"a,b,c"`,
-			expected: map[string][]string{"json": {"a,b,c"}},
+			expected: mapsmultikeys.Tag{"json": {"a,b,c"}},
 		},
 		{
 			desc:     "quoted value",
 			tag:      `json:"a:\"b\""`,
-			expected: map[string][]string{"json": {"a:\"b\""}},
+			expected: mapsmultikeys.Tag{"json": {"a:\"b\""}},
 		},
 		{
 			desc:     "multiple empty tag",
 			tag:      `json:"" yaml:""`,
-			expected: map[string][]string{"json": {""}, "yaml": {""}},
+			expected: mapsmultikeys.Tag{"json": {""}, "yaml": {""}},
 		},
 		{
 			desc:     "multiple tag",
 			tag:      `json:"a" yaml:"b"`,
-			expected: map[string][]string{"json": {"a"}, "yaml": {"b"}},
+			expected: mapsmultikeys.Tag{"json": {"a"}, "yaml": {"b"}},
 		},
 		{
 			desc:     "identical keys",
 			tag:      `json:"a" json:"b"`,
-			expected: map[string][]string{"json": {"a", "b"}},
+			expected: mapsmultikeys.Tag{"json": {"a", "b"}},
 		},
 		{
 			desc: "foo",
 			tag:  `long:"thresholds" default:"1" default:"2" env:"THRESHOLD_VALUES"  env-delim:","`,
-			expected: map[string][]string{
+			expected: mapsmultikeys.Tag{
 				"default":   {"1", "2"},
 				"env":       {"THRESHOLD_VALUES"},
 				"env-delim": {","},
@@ -147,7 +150,7 @@ func TestParseToMapValues(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		tag      string
-		expected map[string][]string
+		expected mapsvalues.Tag
 	}{
 		{
 			desc:     "no tag",
@@ -157,42 +160,42 @@ func TestParseToMapValues(t *testing.T) {
 		{
 			desc:     "empty value",
 			tag:      `json:""`,
-			expected: map[string][]string{"json": {""}},
+			expected: mapsvalues.Tag{"json": {""}},
 		},
 		{
 			desc:     "simple value",
 			tag:      `json:"a"`,
-			expected: map[string][]string{"json": {"a"}},
+			expected: mapsvalues.Tag{"json": {"a"}},
 		},
 		{
 			desc:     "multiple values",
 			tag:      `json:"a,b,c"`,
-			expected: map[string][]string{"json": {"a", "b", "c"}},
+			expected: mapsvalues.Tag{"json": {"a", "b", "c"}},
 		},
 		{
 			desc:     "quoted value",
 			tag:      `json:"a:\"b\""`,
-			expected: map[string][]string{"json": {"a:\"b\""}},
+			expected: mapsvalues.Tag{"json": {"a:\"b\""}},
 		},
 		{
 			desc:     "escaped coma",
 			tag:      `json:"b\\,c\\,d,e"`,
-			expected: map[string][]string{"json": {"b\\,c\\,d", "e"}},
+			expected: mapsvalues.Tag{"json": {"b\\,c\\,d", "e"}},
 		},
 		{
 			desc:     "multiple empty tag",
 			tag:      `json:"" yaml:""`,
-			expected: map[string][]string{"json": {""}, "yaml": {""}},
+			expected: mapsvalues.Tag{"json": {""}, "yaml": {""}},
 		},
 		{
 			desc:     "multiple tag",
 			tag:      `json:"a" yaml:"b"`,
-			expected: map[string][]string{"json": {"a"}, "yaml": {"b"}},
+			expected: mapsvalues.Tag{"json": {"a"}, "yaml": {"b"}},
 		},
 		{
 			desc:     "identical keys",
 			tag:      `json:"a" json:"b"`,
-			expected: map[string][]string{"json": {"a", "b"}},
+			expected: mapsvalues.Tag{"json": {"a", "b"}},
 		},
 	}
 
@@ -212,7 +215,7 @@ func TestParseToSlice(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		tag      string
-		expected []sliceraw.Tag
+		expected sliceraw.Tags
 	}{
 		{
 			desc:     "no tag",
@@ -222,27 +225,27 @@ func TestParseToSlice(t *testing.T) {
 		{
 			desc:     "empty value",
 			tag:      `json:""`,
-			expected: []sliceraw.Tag{{Key: "json", Value: ""}},
+			expected: sliceraw.Tags{{Key: "json", Value: ""}},
 		},
 		{
 			desc:     "simple value",
 			tag:      `json:"a"`,
-			expected: []sliceraw.Tag{{Key: "json", Value: "a"}},
+			expected: sliceraw.Tags{{Key: "json", Value: "a"}},
 		},
 		{
 			desc:     "multiple values",
 			tag:      `json:"a,b,c"`,
-			expected: []sliceraw.Tag{{Key: "json", Value: "a,b,c"}},
+			expected: sliceraw.Tags{{Key: "json", Value: "a,b,c"}},
 		},
 		{
 			desc:     "quoted value",
 			tag:      `json:"a:\"b\""`,
-			expected: []sliceraw.Tag{{Key: "json", Value: "a:\"b\""}},
+			expected: sliceraw.Tags{{Key: "json", Value: "a:\"b\""}},
 		},
 		{
 			desc: "multiple empty tag",
 			tag:  `json:"" yaml:""`,
-			expected: []sliceraw.Tag{
+			expected: sliceraw.Tags{
 				{Key: "json", Value: ""},
 				{Key: "yaml", Value: ""},
 			},
@@ -250,7 +253,7 @@ func TestParseToSlice(t *testing.T) {
 		{
 			desc: "multiple tag",
 			tag:  `json:"a" yaml:"b"`,
-			expected: []sliceraw.Tag{
+			expected: sliceraw.Tags{
 				{Key: "json", Value: "a"},
 				{Key: "yaml", Value: "b"},
 			},
@@ -258,7 +261,7 @@ func TestParseToSlice(t *testing.T) {
 		{
 			desc: "identical keys",
 			tag:  `json:"a" json:"b"`,
-			expected: []sliceraw.Tag{
+			expected: sliceraw.Tags{
 				{Key: "json", Value: "a"},
 				{Key: "json", Value: "b"},
 			},
@@ -281,7 +284,7 @@ func TestParseToSliceValues(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		tag      string
-		expected []slicevalues.Tag
+		expected slicevalues.Tags
 	}{
 		{
 			desc:     "no tag",
@@ -291,32 +294,32 @@ func TestParseToSliceValues(t *testing.T) {
 		{
 			desc:     "empty value",
 			tag:      `json:""`,
-			expected: []slicevalues.Tag{{Key: "json", Values: []string{""}}},
+			expected: slicevalues.Tags{{Key: "json", Values: []string{""}}},
 		},
 		{
 			desc:     "simple value",
 			tag:      `json:"a"`,
-			expected: []slicevalues.Tag{{Key: "json", Values: []string{"a"}}},
+			expected: slicevalues.Tags{{Key: "json", Values: []string{"a"}}},
 		},
 		{
 			desc:     "multiple values",
 			tag:      `json:"a,b,c"`,
-			expected: []slicevalues.Tag{{Key: "json", Values: []string{"a", "b", "c"}}},
+			expected: slicevalues.Tags{{Key: "json", Values: []string{"a", "b", "c"}}},
 		},
 		{
 			desc:     "quoted value",
 			tag:      `json:"a:\"b\""`,
-			expected: []slicevalues.Tag{{Key: "json", Values: []string{"a:\"b\""}}},
+			expected: slicevalues.Tags{{Key: "json", Values: []string{"a:\"b\""}}},
 		},
 		{
 			desc:     "escaped coma",
 			tag:      `json:"b\\,c\\,d,e"`,
-			expected: []slicevalues.Tag{{Key: "json", Values: []string{"b\\,c\\,d", "e"}}},
+			expected: slicevalues.Tags{{Key: "json", Values: []string{"b\\,c\\,d", "e"}}},
 		},
 		{
 			desc: "multiple empty tag",
 			tag:  `json:"" yaml:""`,
-			expected: []slicevalues.Tag{
+			expected: slicevalues.Tags{
 				{Key: "json", Values: []string{""}},
 				{Key: "yaml", Values: []string{""}},
 			},
@@ -324,7 +327,7 @@ func TestParseToSliceValues(t *testing.T) {
 		{
 			desc: "multiple tag",
 			tag:  `json:"a" yaml:"b"`,
-			expected: []slicevalues.Tag{
+			expected: slicevalues.Tags{
 				{Key: "json", Values: []string{"a"}},
 				{Key: "yaml", Values: []string{"b"}},
 			},
@@ -332,7 +335,7 @@ func TestParseToSliceValues(t *testing.T) {
 		{
 			desc: "identical keys",
 			tag:  `json:"a" json:"b"`,
-			expected: []slicevalues.Tag{
+			expected: slicevalues.Tags{
 				{Key: "json", Values: []string{"a"}},
 				{Key: "json", Values: []string{"b"}},
 			},

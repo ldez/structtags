@@ -1,10 +1,27 @@
 package raw
 
-type Filler struct {
-	data map[string]string
+import (
+	"fmt"
+	"strings"
+)
+
+type Tag map[string]string
+
+func (m Tag) String() string {
+	var b strings.Builder
+
+	for k, v := range m {
+		b.WriteString(fmt.Sprintf("%s:%q ", k, v))
+	}
+
+	return strings.TrimSuffix(b.String(), " ")
 }
 
-func (f *Filler) Data() map[string]string {
+type Filler struct {
+	data Tag
+}
+
+func (f *Filler) Data() Tag {
 	return f.data
 }
 
@@ -16,7 +33,7 @@ func (f *Filler) Fill(key, value string) error {
 	}
 
 	if f.data == nil {
-		f.data = map[string]string{}
+		f.data = Tag{}
 	}
 
 	f.data[key] = value

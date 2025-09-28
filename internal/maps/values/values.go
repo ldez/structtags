@@ -2,8 +2,10 @@ package values
 
 import "github.com/ldez/structtags/parser"
 
+type Tag map[string][]string
+
 type Filler struct {
-	data        map[string][]string
+	data        Tag
 	escapeComma bool
 }
 
@@ -13,13 +15,13 @@ func NewFiller(escapeComma bool) *Filler {
 	}
 }
 
-func (f *Filler) Data() map[string][]string {
+func (f *Filler) Data() Tag {
 	return f.data
 }
 
 func (f *Filler) Fill(key, value string) error {
 	if f.data == nil {
-		f.data = make(map[string][]string)
+		f.data = Tag{}
 	}
 
 	values, err := parser.Value(value, f.escapeComma)

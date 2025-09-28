@@ -1,16 +1,18 @@
 package multikeys
 
+type Tag map[string][]string
+
 type Filler struct {
-	data map[string][]string
+	data Tag
 }
 
-func (f *Filler) Data() map[string][]string {
+func (f *Filler) Data() Tag {
 	return f.data
 }
 
 func (f *Filler) Fill(key, value string) error {
 	if f.data == nil {
-		f.data = make(map[string][]string)
+		f.data = Tag{}
 	}
 
 	f.data[key] = append(f.data[key], value)

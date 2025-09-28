@@ -13,30 +13,30 @@ import (
 )
 
 // ParseToMap parses a struct tag to a `map[string]string`.
-func ParseToMap(tag string) (map[string]string, error) {
+func ParseToMap(tag string) (mapsraw.Tag, error) {
 	return parser.Tag(tag, &mapsraw.Filler{})
 }
 
 // ParseToMapMultikeys parses a struct tag to a `map[string][]string`.
 // For non-conventional tags where the key is repeated.
-func ParseToMapMultikeys(tag string) (map[string][]string, error) {
+func ParseToMapMultikeys(tag string) (mapsmultikeys.Tag, error) {
 	return parser.Tag(tag, &mapsmultikeys.Filler{})
 }
 
 // ParseToMapValues parses a struct tag to a `map[string][]string`.
 // The value is split on comma.
-func ParseToMapValues(tag string, escapeComma bool) (map[string][]string, error) {
+func ParseToMapValues(tag string, escapeComma bool) (mapsvalues.Tag, error) {
 	return parser.Tag(tag, mapsvalues.NewFiller(escapeComma))
 }
 
-// ParseToSlice parses a struct tag to a slice of [parser.Tag].
-func ParseToSlice(tag string) ([]sliceraw.Tag, error) {
+// ParseToSlice parses a struct tag to a slice of [sliceraw.Tag].
+func ParseToSlice(tag string) (sliceraw.Tags, error) {
 	return parser.Tag(tag, &sliceraw.Filler{})
 }
 
 // ParseToSliceValues parses a struct tag to a slice of [slicevalues.Tag].
 // The value is split on comma.
-func ParseToSliceValues(tag string, escapeComma bool) ([]slicevalues.Tag, error) {
+func ParseToSliceValues(tag string, escapeComma bool) (slicevalues.Tags, error) {
 	return parser.Tag(tag, slicevalues.NewFiller(escapeComma))
 }
 

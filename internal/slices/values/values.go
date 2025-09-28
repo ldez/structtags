@@ -1,8 +1,23 @@
 package values
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/ldez/structtags/parser"
 )
+
+type Tags []Tag
+
+func (t Tags) String() string {
+	var b strings.Builder
+
+	for _, e := range t {
+		b.WriteString(fmt.Sprintf("%s:%q ", e.Key, strings.Join(e.Values, ",")))
+	}
+
+	return strings.TrimSuffix(b.String(), " ")
+}
 
 type Tag struct {
 	Key    string
@@ -10,7 +25,7 @@ type Tag struct {
 }
 
 type Filler struct {
-	data        []Tag
+	data        Tags
 	escapeComma bool
 }
 
@@ -20,7 +35,7 @@ func NewFiller(escapeComma bool) *Filler {
 	}
 }
 
-func (f *Filler) Data() []Tag {
+func (f *Filler) Data() Tags {
 	return f.data
 }
 

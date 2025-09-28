@@ -16,7 +16,7 @@ func TestFiller_Fill(t *testing.T) {
 	err = filler.Fill("d", "e,f\\,g")
 	require.NoError(t, err)
 
-	expected := map[string][]string{
+	expected := Tag{
 		"a": {"b"},
 		"d": {"e", "f\\,g"},
 	}
@@ -33,7 +33,7 @@ func TestFiller_Fill_noescape(t *testing.T) {
 	err = filler.Fill("d", "e,f\\,g")
 	require.NoError(t, err)
 
-	expected := map[string][]string{
+	expected := Tag{
 		"a": {"b"},
 		"d": {"e", "f\\", "g"},
 	}
@@ -50,7 +50,7 @@ func TestFiller_Fill_duplicate(t *testing.T) {
 	err = filler.Fill("a", "c")
 	require.NoError(t, err)
 
-	expected := map[string][]string{
+	expected := Tag{
 		"a": {"b", "c"},
 	}
 
