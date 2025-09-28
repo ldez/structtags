@@ -11,7 +11,10 @@ import (
 
 // Filler is the interface implemented by types that can fill elements from a struct tag.
 type Filler[T any] interface {
+	// Data returns the [T] filled by the struct tag content.
 	Data() T
+
+	// Fill fills the data from a struct tag.
 	Fill(key, value string) error
 }
 

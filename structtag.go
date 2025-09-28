@@ -9,6 +9,7 @@ import (
 	sliceraw "github.com/ldez/structtags/internal/slices/raw"
 	slicevalues "github.com/ldez/structtags/internal/slices/values"
 	"github.com/ldez/structtags/parser"
+	"github.com/ldez/structtags/structured"
 )
 
 // ParseToMap parses a struct tag to a `map[string]string`.
@@ -37,6 +38,26 @@ func ParseToSlice(tag string) ([]sliceraw.Tag, error) {
 // The value is split on comma.
 func ParseToSliceValues(tag string, escapeComma bool) ([]slicevalues.Tag, error) {
 	return parser.Tag(tag, slicevalues.NewFiller(escapeComma))
+}
+
+// ParseToSliceStructured parses a struct tag to a [structured.Tag].
+// Allows modifying the struct tags.
+// The value is split on comma.
+func ParseToSliceStructured(tag string, opt *structured.Options) (*structured.Tag, error) {
+	var escapeComma bool
+
+	var allowDuplicateKeys bool
+
+	if opt != nil {
+		escapeComma = opt.EscapeComma
+		allowDuplicateKeys = opt.AllowDuplicateKeys
+	}
+
+	if tag == "" {
+		return structured.NewTag(escapeComma, allowDuplicateKeys), nil
+	}
+
+	return parser.Tag(tag, structured.NewFiller(escapeComma, allowDuplicateKeys))
 }
 
 // ParseToFatih parses a struct tag to a [*structtag.Tags].

@@ -1,11 +1,13 @@
 package structtags
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/fatih/structtag"
 	sliceraw "github.com/ldez/structtags/internal/slices/raw"
 	slicevalues "github.com/ldez/structtags/internal/slices/values"
+	"github.com/ldez/structtags/structured"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -530,6 +532,99 @@ func TestParseToFatih_extended(t *testing.T) {
 				}
 			} else {
 				assert.Equal(t, test.expected, tags.Tags())
+			}
+		})
+	}
+}
+
+func TestParseToSliceStructured(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		tag      string
+		options  *structured.Options
+		expected []*structured.Entry
+	}{
+		{
+			desc:     "no tag",
+			tag:      "",
+			expected: nil,
+		},
+		{
+			desc: "empty value",
+			tag:  `json:""`,
+			expected: []*structured.Entry{
+				{Key: "json", RawValue: ""},
+			},
+		},
+		{
+			desc: "simple value",
+			tag:  `json:"a"`,
+			expected: []*structured.Entry{
+				{Key: "json", RawValue: "a"},
+			},
+		},
+		{
+			desc: "multiple values",
+			tag:  `json:"a,b,c"`,
+
+			expected: []*structured.Entry{
+				{Key: "json", RawValue: "a,b,c"},
+			},
+		},
+		{
+			desc: "quoted value",
+			tag:  `json:"a:\"b\""`,
+			expected: []*structured.Entry{
+				{Key: "json", RawValue: "a:\"b\""},
+			},
+		},
+		{
+			desc: "ignore escaped coma",
+			tag:  `json:"b\\,c\\,d,e"`,
+			expected: []*structured.Entry{
+				{Key: "json", RawValue: "b\\,c\\,d,e"},
+			},
+		},
+		{
+			desc: "multiple empty tag",
+			tag:  `json:"" yaml:""`,
+			expected: []*structured.Entry{
+				{Key: "json", RawValue: ""},
+				{Key: "yaml", RawValue: ""},
+			},
+		},
+		{
+			desc: "multiple tag",
+			tag:  `json:"a" yaml:"b"`,
+			expected: []*structured.Entry{
+				{Key: "json", RawValue: "a"},
+				{Key: "yaml", RawValue: "b"},
+			},
+		},
+		{
+			desc:    "identical keys",
+			tag:     `json:"a" json:"b"`,
+			options: &structured.Options{AllowDuplicateKeys: true},
+			expected: []*structured.Entry{
+				{Key: "json", RawValue: "a"},
+				{Key: "json", RawValue: "b"},
+			},
+		},
+	}
+
+	for _, test := range testCases {
+		t.Run(test.desc, func(t *testing.T) {
+			t.Parallel()
+
+			tags, err := ParseToSliceStructured(test.tag, test.options)
+			require.NoError(t, err)
+
+			if test.expected == nil {
+				if !assert.True(t, tags.IsEmpty()) {
+					assert.Equal(t, test.expected, slices.Collect(tags.Seq()))
+				}
+			} else {
+				assert.Equal(t, test.expected, slices.Collect(tags.Seq()))
 			}
 		})
 	}

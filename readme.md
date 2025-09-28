@@ -55,7 +55,7 @@ type Foo struct {
 }
 ```
 
-`ldez/structtags` provides straightforward ways to parse and read struct tags, and a compatibility layer with `fatih/structtag` if you need it.
+`ldez/structtags` provides straightforward ways to parse, read, or modify struct tags, and a compatibility layer with `fatih/structtag` if you need it.
 
 Instead of rewriting the wheel for each project, I also provided a package with the plumbing:
 - `parser.Tag()`: extracted from `reflect.StructTag` for the base parsing.
@@ -65,19 +65,26 @@ Instead of rewriting the wheel for each project, I also provided a package with 
 
 - `structtags.ParseToMap(tag)`:
     - Parses a struct tag to a `map[string]string`.
-- `structtags.ParseToMapMultikeys(tag)`:
-    - Parses a struct tag to a `map[string][]string`.
-    - For non-conventional tags where the key is repeated.
 - `structtags.ParseToMapValues(tag, escapeComma)`:
     - Parses a struct tag to a `map[string][]string`.
     - The value is split on a comma.
     - Option: comma escaped by backslash.
+- `structtags.ParseToMapMultikeys(tag)` (not recommended):
+    - Parses a struct tag to a `map[string][]string`.
+    - For non-conventional tags where the key is repeated.
 - `structtags.ParseToSlice(tag)`:
     - Parses a struct tag to a slice of `type Tag struct { Key, Value string }`.
 - `structtags.ParseToSliceValues(tag, escapeComma)`:
     - Parses a struct tag to a slice of `type Tag struct { Key string, Value []string }`.
     - The value is split on a comma.
     - Option: comma escaped by backslash.
+- `structtags.ParseToSliceStructured(tag, options)`:
+    - Parses a struct tag to a `*structured.Tag`.
+    - The value is split on a comma.
+    - The value is parsed lazily: only if you call `Entry.Values()`
+    - Options:
+        - Comma escaped by backslash.
+        - Multiple keys with the same name. (non-conventional, so not recommended)
 - `structtags.ParseToFatih(tag, escapeComma)`:
     - Parses a struct tag to a `*structtag.Tags`.
     - The value is split on a comma.
