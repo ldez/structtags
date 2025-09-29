@@ -156,7 +156,7 @@ func ExampleParseToSliceValues_escaped_comma() {
 	// {b [hello\,world]}
 }
 
-func ExampleParseToSliceStructured() {
+func ExampleParseToStructured() {
 	type MyStruct struct {
 		Field string `b:"hello" a:"1,2" c:"world"`
 	}
@@ -164,7 +164,7 @@ func ExampleParseToSliceStructured() {
 	// Gets the raw tag from the struct field.
 	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
 
-	tag, err := structtags.ParseToSliceStructured(string(rawTag))
+	tag, err := structtags.ParseToStructured(string(rawTag))
 	if err != nil {
 		panic(err)
 	}

@@ -2,10 +2,10 @@ package structtags
 
 import (
 	"github.com/fatih/structtag"
+	"github.com/ldez/structtags/variant/fatih"
 	mapsmultikeys "github.com/ldez/structtags/variant/maps/multikeys"
 	mapsraw "github.com/ldez/structtags/variant/maps/raw"
 	mapsvalues "github.com/ldez/structtags/variant/maps/values"
-	slicesfatih "github.com/ldez/structtags/variant/slices/fatih"
 	sliceraw "github.com/ldez/structtags/variant/slices/raw"
 	slicevalues "github.com/ldez/structtags/variant/slices/values"
 	"github.com/ldez/structtags/variant/structured"
@@ -43,16 +43,16 @@ func ParseToSliceValues(tag string, options ...slicevalues.Option) (slicevalues.
 	return slicevalues.Parse(tag, options...)
 }
 
-// ParseToSliceStructured parses a struct tag to a [structured.Tag].
+// ParseToStructured parses a struct tag to a [structured.Tag].
 // Allows modifying the struct tags.
 // The value is split on comma.
 // Ignore duplicated keys by default.
-func ParseToSliceStructured(tag string, options ...structured.Option) (*structured.Tag, error) {
+func ParseToStructured(tag string, options ...structured.Option) (*structured.Tag, error) {
 	return structured.Parse(tag, options...)
 }
 
 // ParseToFatih parses a struct tag to a [*structtag.Tags].
 // The value is split on comma.
 func ParseToFatih(tag string, escapeComma bool) (*structtag.Tags, error) {
-	return slicesfatih.Parse(tag, escapeComma)
+	return fatih.Parse(tag, escapeComma)
 }

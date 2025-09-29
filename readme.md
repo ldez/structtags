@@ -74,7 +74,7 @@ Options:
   - `DuplicateKeysDeny`
   - `DuplicateKeysAllow` (non-conventional, so not recommended)
 
-### `structtags.ParseToSliceStructured(tag, ...options)`
+### `structtags.ParseToStructured(tag, ...options)`
 
 Parses a struct tag to a `*structured.Tag`.
 
