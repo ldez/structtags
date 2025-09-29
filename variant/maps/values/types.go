@@ -2,6 +2,8 @@ package values
 
 import (
 	"fmt"
+	"maps"
+	"slices"
 	"strings"
 )
 
@@ -47,8 +49,12 @@ type Tag map[string][]string
 func (m Tag) String() string {
 	var b strings.Builder
 
-	for k, v := range m {
-		b.WriteString(fmt.Sprintf("%s:%q ", k, strings.Join(v, ",")))
+	keys := slices.AppendSeq(make([]string, 0, len(m)), maps.Keys(m))
+
+	slices.Sort(keys)
+
+	for _, k := range keys {
+		b.WriteString(fmt.Sprintf("%s:%q ", k, strings.Join(m[k], ",")))
 	}
 
 	return strings.TrimSuffix(b.String(), " ")

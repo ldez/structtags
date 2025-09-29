@@ -62,7 +62,7 @@ func ExampleParseToMapValues() {
 		panic(err)
 	}
 
-	// cast to map only to have a deterministic output for the example.
+	// Cast to map only to display the raw map as output for the example.
 	fmt.Println(map[string][]string(data))
 
 	// Output:
@@ -82,7 +82,7 @@ func ExampleParseToMapValues_escaped_comma() {
 		panic(err)
 	}
 
-	// cast to map only to have a deterministic output for the example.
+	// Cast to map only to display the raw map as output for the example.
 	fmt.Println(map[string][]string(data))
 
 	// Output:
