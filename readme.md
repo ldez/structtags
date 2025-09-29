@@ -1,8 +1,7 @@
 # StructTags
 
-`structtags` provides a way of parsing struct tag Go fields.
+`structtags` provides several ways of parsing struct tags.
 
-The goal is to provide some ways to parse struct tags:
 - Some projects need a full parsing (key, values)
 - Some others only need the key and the raw value.
 - Other projects need to escape the comma.
@@ -104,7 +103,7 @@ The value is split on a comma.
 
 The value is parsed lazily: only if you call `Entry.Values()`
 
-[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSliceStructured)
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToStructured)
 
 Options:
 - `WithEscapeComma`: Comma escaped by backslash.
@@ -129,9 +128,17 @@ To implement a custom parser, you can implement the `parser.Filler` interface.
 
 ## Why this library?
 
-[`fatih/structtag`](https://github.com/fatih/structtag) is a great library, but it's not extensible, it was build around JSON tags, and it was designed to modify tags.
+[`reflect.StructTag`](https://pkg.go.dev/reflect#StructTag) is great but:
+- It doesn't allow extracting all keys or iterating on them.
+- It doesn't allow modifying the struct tags.
+- It doesn't provide methods to split the values on comma.
+- It doesn't allow getting non-conventional duplicated keys.
+
+[`fatih/structtag`](https://github.com/fatih/structtag) is a great library, but it's not extensible, it was built around JSON tags, and it was designed to modify tags.
 
 For example, the [`Tag`](https://github.com/fatih/structtag/blob/2977b8db49bbf5ae2e0ae2be55e43d2c1798fc03/tags.go#L26-L39) struct inside `fatih/structtag` that represents a tag is:
+
+<details>
 
 ```go
 type Tag struct {
@@ -149,11 +156,15 @@ type Tag struct {
 }
 ```
 
+</details>
+
 `Name` and `Options` are related to JSON tags (and other marshaling/unmarshalling libraries).
 
 But the first element in a struct tag value is not necessarily a name.
 
-Example:
+<details>
+<summary>Example</summary>
+
 ```go
 type Foo struct {
   Field1 float64  `minimum:"10.5" example:"20.6" required:"true"`
@@ -162,17 +173,22 @@ type Foo struct {
 }
 ```
 
+</details>
+
 Also, most projects don't need to modify the struct tags, but only to read them.
 
 There are some limitations with `fatih/structtag` when there is comma inside the value.
 
-Example:
+<details>
+<summary>Example</summary>
 
 ```go
 type Foo struct {
   Field1 string   `regexp:"[a-z\\,.]"`
 }
 ```
+
+</details>
 
 `ldez/structtags` provides straightforward ways to parse, read, or modify struct tags, and a compatibility layer with `fatih/structtag` if you need it.
 
