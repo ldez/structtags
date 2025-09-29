@@ -12,19 +12,29 @@ This is the first version of the module, and I want to extend it based on feedba
 
 ## Usage
 
-### `structtags.ParseToMap(tag)`
+### `structtags.ParseToMap(tag, ...options)`
 
 Parses a struct tag to a `map[string]string`.
 
 [Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToMap)
 
-### `structtags.ParseToMapValues(tag, escapeComma)`
+Options:
+- `WithDuplicateKeysMode`:
+  - `DuplicateKeysIgnore` (default)
+  - `DuplicateKeysDeny`
+
+### `structtags.ParseToMapValues(tag, ...options)`
 
 Parses a struct tag to a `map[string][]string`.
 
 The value is split on a comma.
 
-Option: comma escaped by backslash.
+Options:
+- `WithEscapeComma`: Comma escaped by backslash.
+- `WithDuplicateKeysMode`:
+  - `DuplicateKeysIgnore` (default)
+  - `DuplicateKeysDeny`
+  - `DuplicateKeysAllow` (non-conventional, so not recommended)
 
 [Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToMapValues)
 
@@ -37,33 +47,47 @@ Parses a struct tag to a `map[string][]string`.
 
 [Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToMapMultikeys)
 
-### `structtags.ParseToSlice(tag)`
+### `structtags.ParseToSlice(tag, ...options)`
 
 Parses a struct tag to a slice of `type Tag struct { Key, Value string }`.
 
 [Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSlice)
 
-### `structtags.ParseToSliceValues(tag, escapeComma)`
+Options:
+- `WithDuplicateKeysMode`:
+  - `DuplicateKeysIgnore` (default)
+  - `DuplicateKeysDeny`
+  - `DuplicateKeysAllow` (non-conventional, so not recommended)
+
+### `structtags.ParseToSliceValues(tag, ...options)`
 
 Parses a struct tag to a slice of `type Tag struct { Key string, Value []string }`.
 
 The value is split on a comma.
 
-Option: comma escaped by backslash.
+Options:
+- `WithEscapeComma`: Comma escaped by backslash.
+- `WithDuplicateKeysMode`:
+  - `DuplicateKeysIgnore` (default)
+  - `DuplicateKeysDeny`
+  - `DuplicateKeysAllow` (non-conventional, so not recommended)
 
 [Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSliceValues)
 
-### `structtags.ParseToSliceStructured(tag, options)`
+### `structtags.ParseToSliceStructured(tag, ...options)`
 
 Parses a struct tag to a `*structured.Tag`.
 
 The value is split on a comma.
 
 The value is parsed lazily: only if you call `Entry.Values()`
- 
+
 Options:
-- `EscapeComma`: Comma escaped by backslash.
-- `AllowDuplicateKeys`: Multiple keys with the same name. (non-conventional, so not recommended)
+- `WithEscapeComma`: Comma escaped by backslash.
+- `WithDuplicateKeysMode`:
+  - `DuplicateKeysIgnore` (default)
+  - `DuplicateKeysDeny`
+  - `DuplicateKeysAllow` (non-conventional, so not recommended)
 
 [Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSliceStructured)
 
