@@ -29,14 +29,14 @@ Parses a struct tag to a `map[string][]string`.
 
 The value is split on a comma.
 
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToMapValues)
+
 Options:
 - `WithEscapeComma`: Comma escaped by backslash.
 - `WithDuplicateKeysMode`:
   - `DuplicateKeysIgnore` (default)
   - `DuplicateKeysDeny`
   - `DuplicateKeysAllow` (non-conventional, so not recommended)
-
-[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToMapValues)
 
 ### `structtags.ParseToMapMultikeys(tag)`
 
@@ -65,14 +65,14 @@ Parses a struct tag to a slice of `type Tag struct { Key string, Value []string 
 
 The value is split on a comma.
 
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSliceValues)
+
 Options:
 - `WithEscapeComma`: Comma escaped by backslash.
 - `WithDuplicateKeysMode`:
   - `DuplicateKeysIgnore` (default)
   - `DuplicateKeysDeny`
   - `DuplicateKeysAllow` (non-conventional, so not recommended)
-
-[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSliceValues)
 
 ### `structtags.ParseToSliceStructured(tag, ...options)`
 
@@ -82,14 +82,14 @@ The value is split on a comma.
 
 The value is parsed lazily: only if you call `Entry.Values()`
 
+[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSliceStructured)
+
 Options:
 - `WithEscapeComma`: Comma escaped by backslash.
 - `WithDuplicateKeysMode`:
   - `DuplicateKeysIgnore` (default)
   - `DuplicateKeysDeny`
   - `DuplicateKeysAllow` (non-conventional, so not recommended)
-
-[Example](https://pkg.go.dev/github.com/ldez/structtags#example-ParseToSliceStructured)
 
 ### `structtags.ParseToFatih(tag, escapeComma)`
 
