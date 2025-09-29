@@ -1,11 +1,15 @@
 # StructTags
 
-`structtags` provides several ways of parsing struct tags.
+`structtags` provides straightforward ways to parse, read, or modify struct tags.
 
 - Some projects need a full parsing (key, values)
 - Some others only need the key and the raw value.
 - Other projects need to escape the comma.
 - Etc.
+
+Instead of rewriting the wheel for each project, I also provided a package with the plumbing:
+- `parser.Tag()`: extracted from `reflect.StructTag` for the base parsing.
+- `parser.Value()`: to parse the value (support optional comma escaping).
 
 This is the first version of the module, and I want to extend it based on feedback so that the API can evolve and break.
 
@@ -114,6 +118,8 @@ Options:
 
 ### `structtags.ParseToFatih(tag, escapeComma)`
 
+Compatibility layer with `fatih/structtag`.
+
 Parses a struct tag to a `*structtag.Tags`.
 
 The value is split on a comma.
@@ -189,12 +195,6 @@ type Foo struct {
 ```
 
 </details>
-
-`ldez/structtags` provides straightforward ways to parse, read, or modify struct tags, and a compatibility layer with `fatih/structtag` if you need it.
-
-Instead of rewriting the wheel for each project, I also provided a package with the plumbing:
-- `parser.Tag()`: extracted from `reflect.StructTag` for the base parsing.
-- `parser.Value()`: to parse the value (support optional comma escaping).
 
 ## Notes
 
