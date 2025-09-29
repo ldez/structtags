@@ -43,7 +43,8 @@ func ExampleParseToMapMultikeys() {
 		panic(err)
 	}
 
-	fmt.Println(data)
+	// cast to map only to have a deterministic output for the example.
+	fmt.Println(map[string][]string(data))
 
 	// Output:
 	// map[a:[1,2] b:[hello world]]
