@@ -12,6 +12,28 @@ This is the first version of the module, and I want to extend it based on feedba
 
 ## Usage
 
+```mermaid
+---
+title: What is the best parsing function for your context?
+---
+flowchart TB
+    A([Need to keep the keys in order?]) -- yes --> B([Need the values to be split on commas?])
+    B -- yes --> G(ParseToSliceValues)
+    B -- no --> F(ParseToSlice)
+    B -- both --> L(ParseToStructured)
+    A -- no --> C([Need the values to be split on commas?])
+    C -- yes --> I(ParseToMapValues)
+    C -- no --> H([Using duplicated keys?])
+    H -- yes --> J(ParseToMapMultikeys)
+    H -- no --> K(ParseToMap)
+    click G "https://github.com/ldez/structtags?tab=readme-ov-file#structtagsparsetoslicevaluestag-options" "ParseToSliceValues"
+    click F "https://github.com/ldez/structtags?tab=readme-ov-file#structtagsparsetoslicetag-options" "ParseToSlice"
+    click L "https://github.com/ldez/structtags?tab=readme-ov-file#structtagsparsetostructuredtag-options" "ParseToStructured"
+    click I "https://github.com/ldez/structtags?tab=readme-ov-file#structtagsparsetomapvaluestag-options" "ParseToMapValues"
+    click J "https://github.com/ldez/structtags?tab=readme-ov-file#structtagsparsetomapmultikeystag" "ParseToMapMultikeys"
+    click K "https://github.com/ldez/structtags?tab=readme-ov-file#structtagsparsetomaptag-options" "ParseToMap"
+```
+
 ### `structtags.ParseToMap(tag, ...options)`
 
 Parses a struct tag to a `map[string]string`.
