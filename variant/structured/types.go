@@ -134,7 +134,9 @@ func (t *Tag) Seq() iter.Seq[*Entry] {
 				continue
 			}
 
-			yield(entry)
+			if !yield(entry) {
+				return
+			}
 		}
 	}
 }
