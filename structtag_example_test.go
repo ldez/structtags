@@ -16,7 +16,7 @@ func ExampleParseToMap() {
 	}
 
 	// Gets the raw tag from the struct field.
-	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
+	rawTag := reflect.TypeFor[MyStruct]().Field(0).Tag
 
 	data, err := structtags.ParseToMap(string(rawTag))
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleParseToMapMultikeys() {
 	}
 
 	// Gets the raw tag from the struct field.
-	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
+	rawTag := reflect.TypeFor[MyStruct]().Field(0).Tag
 
 	data, err := structtags.ParseToMapMultikeys(string(rawTag))
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleParseToMapValues() {
 	}
 
 	// Gets the raw tag from the struct field.
-	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
+	rawTag := reflect.TypeFor[MyStruct]().Field(0).Tag
 
 	data, err := structtags.ParseToMapValues(string(rawTag))
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleParseToMapValues_escaped_comma() {
 	}
 
 	// Gets the raw tag from the struct field.
-	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
+	rawTag := reflect.TypeFor[MyStruct]().Field(0).Tag
 
 	data, err := structtags.ParseToMapValues(string(rawTag), mapsvalues.WithEscapeComma())
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleParseToSlice() {
 	}
 
 	// Gets the raw tag from the struct field.
-	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
+	rawTag := reflect.TypeFor[MyStruct]().Field(0).Tag
 
 	data, err := structtags.ParseToSlice(string(rawTag))
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleParseToSliceValues() {
 	}
 
 	// Gets the raw tag from the struct field.
-	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
+	rawTag := reflect.TypeFor[MyStruct]().Field(0).Tag
 
 	data, err := structtags.ParseToSliceValues(string(rawTag))
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleParseToSliceValues_escaped_comma() {
 	}
 
 	// Gets the raw tag from the struct field.
-	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
+	rawTag := reflect.TypeFor[MyStruct]().Field(0).Tag
 
 	data, err := structtags.ParseToSliceValues(string(rawTag), slicevalues.WithEscapeComma())
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleParseToStructured() {
 	}
 
 	// Gets the raw tag from the struct field.
-	rawTag := reflect.TypeOf(MyStruct{}).Field(0).Tag
+	rawTag := reflect.TypeFor[MyStruct]().Field(0).Tag
 
 	tag, err := structtags.ParseToStructured(string(rawTag))
 	if err != nil {
