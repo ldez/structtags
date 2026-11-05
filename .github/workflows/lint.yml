@@ -1,4 +1,4 @@
-name: Linting
+7name: Linting
 
 on:
   push:
@@ -15,8 +15,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-go@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with:
           go-version: stable
 
@@ -26,6 +26,6 @@ jobs:
           git diff --exit-code go.mod
           git diff --exit-code go.sum
 
-      - uses: golangci/golangci-lint-action@v8
+      - uses: golangci/golangci-lint-action@v9
         with:
           version: latest

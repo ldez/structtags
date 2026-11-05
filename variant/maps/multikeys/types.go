@@ -19,7 +19,7 @@ func (m Tag) String() string {
 
 	for _, k := range keys {
 		for _, v := range m[k] {
-			b.WriteString(fmt.Sprintf("%s:%q ", k, v))
+			_, _ = fmt.Fprintf(&b, "%s:%q ", k, v)
 		}
 	}
 

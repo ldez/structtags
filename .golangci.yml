@@ -6,7 +6,9 @@ formatters:
     - goimports
   settings:
     gofumpt:
-      extra-rules: true
+      extra:
+        clothe-returns: true
+        group-params: true
 
 linters:
   default: all
@@ -15,9 +17,11 @@ linters:
     - sqlclosecheck # SQL
     - cyclop # duplicate of gocyclo
     - wsl # Deprecated
+    - gomodguard # Deprecated
     - err113
     - exhaustive
     - exhaustruct
+    - exhaustruct_v5
     - gochecknoglobals
     - lll
     - noinlineerr
@@ -58,8 +62,13 @@ linters:
       - common-false-positives
       - std-error-handling
     rules:
+      - path: (.+)_test.go
+        linters:
+          - funlen
+          - goconst
+          - maintidx
       - path: parser/tag.go
-        text: "Tag returns generic interface \\(T\\) of type param any"
+        text: "Tag returns generic interface \\(T\\)"
         linters:
           - ireturn
       - path: structtag_example_test.go

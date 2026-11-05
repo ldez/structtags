@@ -38,7 +38,7 @@ func (t Tags) String() string {
 	var b strings.Builder
 
 	for _, e := range t {
-		b.WriteString(fmt.Sprintf("%s:%q ", e.Key, e.Value))
+		_, _ = fmt.Fprintf(&b, "%s:%q ", e.Key, e.Value)
 	}
 
 	return strings.TrimSuffix(b.String(), " ")

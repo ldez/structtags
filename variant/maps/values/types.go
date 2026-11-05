@@ -54,7 +54,7 @@ func (m Tag) String() string {
 	slices.Sort(keys)
 
 	for _, k := range keys {
-		b.WriteString(fmt.Sprintf("%s:%q ", k, strings.Join(m[k], ",")))
+		_, _ = fmt.Fprintf(&b, "%s:%q ", k, strings.Join(m[k], ","))
 	}
 
 	return strings.TrimSuffix(b.String(), " ")
